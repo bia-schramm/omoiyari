@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeria de Fotos | Associação Omoiyari</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: var(--bg-alt);">
+
+  <header class="site-header scrolled" style="position: sticky;">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">思</span>
+        <span class="brand-text">Associação Omoiyari</span>
+      </a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="btn btn-outline-white" style="color: var(--primary); border-color: var(--primary);">
+          ← Voltar para o site
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section" style="padding-bottom: 2rem; padding-top: 3rem;">
+    <div class="container center">
+      <span class="eyebrow">Nossa História</span>
+      <h2>Galeria de <span class="destaque-fotos">Fotos</span></h2>
+      <p style="max-width: 600px; margin: 1rem auto 0;">Acompanhe nossos eventos, exames de faixa e o dia a dia dos nossos alunos na Associação.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem;">
+    <div class="container">
+      <div class="galeria-grid">
+        
+        <a href="#" onclick="abrirAlbum('exame')" class="album-card">
+          <div class="album-cover-wrap">
+            <img src="img/manu ana e matheus.jpeg" alt="Capa do Exame de Faixa" class="album-cover">
+            <div class="album-badge">Ver Fotos</div>
+          </div>
+          <div class="album-info">
+            <h3>Exame de Faixa</h3>
+            <p>Julho de 2026</p>
+          </div>
+        </a>
+
+        <a href="#" onclick="abrirAlbum('infantil')" class="album-card">
+          <div class="album-cover-wrap">
+            <img src="img/cumprimento.png" alt="Capa do Treino Infantil" class="album-cover">
+            <div class="album-badge">Ver Fotos</div>
+          </div>
+          <div class="album-info">
+            <h3>Treino Infantil & Kobudo</h3>
+            <p>Junho de 2026</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <div id="albumModal" class="modal-galeria">
+    <div class="modal-galeria-content">
+      <span class="fechar-modal" id="closeModal">&times;</span>
+      <h2 id="modalTitle" style="color: white; margin-bottom: 1.5rem;">Nome do Álbum</h2>
+      
+      <div class="modal-grid" id="modalGrid"></div>
+    </div>
+  </div>
+
+<!-- ============ CAIXA DA FOTO AMPLIADA ============ -->
+  <div id="midiaUnicaModal" class="modal-midia-unica" style="display: none;">
+    <span class="fechar-midia" id="closeMidia">&times;</span>
+    <img id="imgAmpliada" src="" alt="Imagem em Destaque">
+  </div>
+
+  <!-- ============ SCRIPT PARA ABRIR AS FOTOS E VÍDEOS ============ -->
+  <script>
+    const albuns = {
+      'exame': {
+        titulo: 'Exame de Faixa - Julho 2026',
+        midias: [
+          'img/manu ana e matheus.jpeg',
+          'img/cumprimento.png',
+          'img/video-kobudo.mp4'
+        ]
+      },
+      'infantil': {
+        titulo: 'Treino Infantil & Kobudo',
+        midias: [
+          'img/cumprimento.png',
+          'img/Design sem nome (5).jpg'
+        ]
+      }
+    };
+
+    const modal = document.getElementById('albumModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalGrid = document.getElementById('modalGrid');
+    const modalTitle = document.getElementById('modalTitle');
+    
+    // Novas variáveis da foto ampliada
+    const midiaUnicaModal = document.getElementById('midiaUnicaModal');
+    const imgAmpliada = document.getElementById('imgAmpliada');
+    const closeMidia = document.getElementById('closeMidia');
+
+    function abrirAlbum(idAlbum) {
+      event.preventDefault(); 
+      const album = albuns[idAlbum];
+      if(!album) return;
+
+      modalTitle.innerText = album.titulo;
+      modalGrid.innerHTML = ''; 
+
+      album.midias.forEach(arquivo => {
+        if (arquivo.toLowerCase().endsWith('.mp4')) {
+          const video = document.createElement('video');
+          video.src = arquivo;
+          video.controls = true;
+          modalGrid.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = arquivo;
+          // Quando clicar na foto da grade, abre a versão ampliada
+          img.onclick = () => abrirMidiaUnica(arquivo); 
+          modalGrid.appendChild(img);
+        }
+      });
+
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; 
+    }
+
+    // Função que abre a foto maior
+    function abrirMidiaUnica(src) {
+      imgAmpliada.src = src;
+      midiaUnicaModal.style.display = 'flex'; // flex para centralizar perfeitamente
+    }
+
+    // Fechar o álbum inteiro
+    closeModal.onclick = function() {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; 
+      const videos = modalGrid.querySelectorAll('video');
+      videos.forEach(v => v.pause());
+    }
+
+    // Fechar a foto ampliada no X
+    closeMidia.onclick = function() {
+      midiaUnicaModal.style.display = 'none';
+    }
+
+    // Fechar as janelas ao clicar fora (no fundo escuro)
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        const videos = modalGrid.querySelectorAll('video');
+        videos.forEach(v => v.pause());
+      }
+      if (event.target == midiaUnicaModal) {
+        midiaUnicaModal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
