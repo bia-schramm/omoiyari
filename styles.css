@@ -839,3 +839,23 @@ p { color: var(--muted); }
     object-position: center 80% !important;
   }
 }
+
+/* ============ AJUSTE DA FOTO DOS SENSEIS (FINAL CTA) ============ */
+.final-cta img {
+  width: 110%;
+  height: 90%;
+  object-fit: cover;
+  object-position: center 35%; /* Foco principal no computador (ajuste se quiser mais para cima ou baixo) */
+}
+
+/* Regra específica para o celular */
+@media (max-width: 768px) {
+  .final-cta {
+    overflow: hidden; /* Garante que o zoom não crie barras brancas na lateral */
+  }
+  
+  .final-cta img {
+    object-position: center 25% !important; /* Puxa a imagem mais para cima para garantir que os rostos apareçam */
+    transform: scale(1.15); /* Dá um leve zoom/aproximação no celular */
+  }
+}
