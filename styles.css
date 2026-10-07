@@ -300,11 +300,37 @@ p { color: var(--muted); }
 .stat-l { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
 
 
+/* Força os itens da última linha a centralizarem-se perfeitamente */
 .teacher-card {
-  position: relative; background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.75rem; text-align: center;
-  transition: transform .3s ease, box-shadow .3s ease;
+  flex: 1 1 310px;
+  max-width: 330px;
 }
+
+.teacher-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  text-align: center;
+  transition: transform .3s ease, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column;
+  /* (Remova o height fixo daqui) */
+}
+
+/* Força a caixinha de "Onde ensina" a encaixar exatamente no rodapé */
+.teacher-card > div[style*="background"] {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.teacher-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-elegant); }
+.teacher-card.highlight { border-color: rgba(94,42,132,0.3); box-shadow: 0 0 0 1px rgba(94,42,132,0.2); }
+
+
 .teacher-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-elegant); }
 .teacher-card.highlight { border-color: rgba(94,42,132,0.3); box-shadow: 0 0 0 1px rgba(94,42,132,0.2); }
 .ribbon {
